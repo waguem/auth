@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+    env_file:
+      - ./env/.postgres.env
+    networks:
+      - proxy_https_default
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    env_file:
+      - ./env/.keycloak.env
+    command: start
+    depends_on:
+      - postgres
+    networks:
+      - proxy_https_default
+    ports:
+      - 8443:8443
+    volumes:
+      - ${TLS_CERT_DIR}:/etc/x509/https:ro
+
+volumes:
+  auth_db_data:
+    driver: local
+
+networks:
+  proxy_https_default:
+    external: true
