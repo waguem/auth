@@ -6,7 +6,7 @@ services:
     env_file:
       - ./env/.postgres.env
     networks:
-      - proxy_https_default
+      - mkdi-staging
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -16,7 +16,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - proxy_https_default
+      - mkdi-staging
     ports:
       - 8443:8443
     volumes:
@@ -27,5 +27,5 @@ volumes:
     driver: local
 
 networks:
-  proxy_https_default:
+  mkdi-staging:
     external: true
